@@ -1,0 +1,32 @@
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+python-multipart==0.0.6
+
+# LLM and AI
+anthropic==0.18.1
+
+# Vector Database
+chromadb==0.4.22
+numpy<2.0.0  # ChromaDB 0.4.22 is not compatible with NumPy 2.0
+
+# PDF Processing
+pypdf==4.0.1
+
+# Embeddings
+sentence-transformers==2.3.1
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Logging and Monitoring
+loguru==0.7.2
+
+# HTTP Client
+httpx==0.26.0
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.23.3

@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  qa-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: attention-qa-system
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist vector database
+      - ./data:/app/data
+      # Mount .env file for configuration
+      - ./.env:/app/.env
+    environment:
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - qa-network
+
+networks:
+  qa-network:
+    driver: bridge
+
+volumes:
+  chroma_data:
+    driver: local
