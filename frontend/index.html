@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Is All You Need - Q&A System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Attention Is All You Need</h1>
+            <p class="subtitle">Q&A System powered by RAG and Claude</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">Status:</span>
+                <span id="system-status" class="status-value loading">Checking...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Documents:</span>
+                <span id="doc-count" class="status-value">-</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Model:</span>
+                <span id="model-name" class="status-value">-</span>
+            </div>
+        </div>
+
+        <div class="init-section" id="init-section">
+            <div class="card">
+                <h2>Initialize System</h2>
+                <p>The vector store is empty. Please index the paper before asking questions.</p>
+                <button id="index-btn" class="btn btn-primary">
+                    <span class="btn-text">Index Paper</span>
+                    <span class="btn-loading" style="display: none;">
+                        <span class="spinner"></span> Indexing...
+                    </span>
+                </button>
+                <div id="index-result" class="result-message"></div>
+            </div>
+        </div>
+
+        <div class="qa-section" id="qa-section" style="display: none;">
+            <div class="card">
+                <h2>Ask a Question</h2>
+                <div class="input-group">
+                    <textarea
+                        id="question-input"
+                        placeholder="E.g., What is the Transformer architecture? How does multi-head attention work?"
+                        rows="3"
+                    ></textarea>
+                    <div class="options">
+                        <label for="top-k">
+                            Context chunks (top_k):
+                            <input type="number" id="top-k" value="5" min="1" max="10">
+                        </label>
+                    </div>
+                    <button id="ask-btn" class="btn btn-primary">
+                        <span class="btn-text">Ask Question</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="spinner"></span> Thinking...
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="answer-section" class="card" style="display: none;">
+                <h2>Answer</h2>
+                <div id="answer-content" class="answer-content"></div>
+
+                <div class="metadata">
+                    <div class="metadata-item">
+                        <strong>Model:</strong> <span id="answer-model">-</span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Chunks Used:</strong> <span id="chunks-used">-</span>
+                    </div>
+                    <div class="metadata-item">
+                        <strong>Tokens:</strong> <span id="token-usage">-</span>
+                    </div>
+                </div>
+
+                <div class="context-section">
+                    <h3>Relevant Context</h3>
+                    <div id="context-list"></div>
+                </div>
+            </div>
+
+            <div class="examples-section">
+                <h3>Example Questions</h3>
+                <div class="example-questions">
+                    <button class="example-btn" data-question="What is the Transformer architecture?">
+                        What is the Transformer architecture?
+                    </button>
+                    <button class="example-btn" data-question="How does multi-head attention work?">
+                        How does multi-head attention work?
+                    </button>
+                    <button class="example-btn" data-question="What is the role of positional encoding?">
+                        What is the role of positional encoding?
+                    </button>
+                    <button class="example-btn" data-question="Explain the self-attention mechanism">
+                        Explain the self-attention mechanism
+                    </button>
+                    <button class="example-btn" data-question="What are the key innovations in this paper?">
+                        What are the key innovations in this paper?
+                    </button>
+                    <button class="example-btn" data-question="How does the encoder-decoder structure work?">
+                        How does the encoder-decoder structure work?
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built with FastAPI, ChromaDB, and Anthropic Claude | <a href="http://localhost:8000/docs" target="_blank">API Docs</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

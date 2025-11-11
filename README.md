@@ -2,8 +2,11 @@
 
 A production-ready Q&A system built over the seminal "Attention Is All You Need" research paper. This system uses Retrieval-Augmented Generation (RAG) to answer questions about the Transformer architecture and related concepts.
 
+![Demo](demo.gif)
+
 ## Features
 
+- **Modern Web UI**: Beautiful, responsive frontend with dark theme and real-time status
 - **Intelligent Q&A**: Ask questions about the Transformer architecture, attention mechanisms, and paper concepts
 - **RAG Pipeline**: Uses ChromaDB for vector storage and Anthropic Claude for answer generation
 - **REST API**: FastAPI-based REST API with comprehensive endpoints
@@ -42,37 +45,64 @@ A production-ready Q&A system built over the seminal "Attention Is All You Need"
 
 ## Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: Web UI (Easiest)
 
-1. **Clone and navigate to the project**:
-   ```bash
-   cd qa-system
-   ```
-
-2. **Set up environment variables**:
+1. **Set up environment variables**:
    ```bash
    cp .env.example .env
    # Edit .env and add your Anthropic API key
    ```
 
-3. **Build and run with Docker Compose**:
+2. **Start the backend**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   uvicorn app.main:app --host 0.0.0.0 --port 8000
+   ```
+
+3. **In a new terminal, serve the frontend**:
+   ```bash
+   cd frontend
+   python -m http.server 3000
+   ```
+
+4. **Open in browser**:
+   ```
+   http://localhost:3000
+   ```
+
+5. **Use the UI**:
+   - Click "Index Paper" to initialize the system
+   - Ask questions using the web interface
+   - View answers with relevant context chunks
+
+### Option 2: Docker
+
+1. **Set up environment variables**:
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your Anthropic API key
+   ```
+
+2. **Build and run with Docker Compose**:
    ```bash
    docker-compose up --build
    ```
 
-4. **Initialize the system** (index the paper):
+3. **Initialize the system** (index the paper):
    ```bash
    curl -X POST http://localhost:8000/index
    ```
 
-5. **Ask a question**:
+4. **Ask a question**:
    ```bash
    curl -X POST http://localhost:8000/ask \
      -H "Content-Type: application/json" \
      -d '{"question": "What is the Transformer architecture?"}'
    ```
 
-### Option 2: Local Development
+### Option 3: API Only (Local Development)
 
 1. **Create and activate virtual environment**:
    ```bash
@@ -102,11 +132,32 @@ A production-ready Q&A system built over the seminal "Attention Is All You Need"
    curl -X POST http://localhost:8000/index
    ```
 
+## Web UI
+
+The system includes a modern web interface for easy interaction:
+
+### Features
+
+- **Real-time Status**: Monitor system health, document count, and model
+- **One-click Indexing**: Initialize the system with a single button
+- **Interactive Q&A**: Ask questions with adjustable parameters
+- **Example Questions**: Pre-made questions to get started quickly
+- **Context Viewing**: See relevant text chunks used for answers
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Keyboard Shortcuts**: Ctrl+Enter (Cmd+Enter on Mac) to submit questions
+
+### Accessing the UI
+
+1. Start the backend (port 8000)
+2. Serve the frontend: `cd frontend && python -m http.server 3000`
+3. Open http://localhost:3000 in your browser
+
 ## API Documentation
 
 Once the application is running, visit:
 - Interactive API docs: http://localhost:8000/docs
 - Alternative docs: http://localhost:8000/redoc
+- Web UI: http://localhost:3000 (if frontend is running)
 
 ### Endpoints
 
@@ -266,6 +317,10 @@ qa-system/
 │   ├── pdf_processor.py    # PDF processing utilities
 │   ├── rag_pipeline.py     # RAG implementation
 │   └── vector_store.py     # ChromaDB integration
+├── frontend/               # Web UI
+│   ├── index.html         # Main HTML structure
+│   ├── styles.css         # Styling and responsive design
+│   └── script.js          # API interactions and UI logic
 ├── data/                   # Data directory (auto-created)
 │   └── chroma_db/         # Vector database storage
 ├── tests/                  # Test directory
@@ -275,6 +330,7 @@ qa-system/
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
+├── demo.gif               # Demo animation
 └── README.md
 ```
 
